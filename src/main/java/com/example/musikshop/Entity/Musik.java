@@ -1,21 +1,31 @@
 package com.example.musikshop.Entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Musik {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "musik_id",updatable = false,nullable = false)
     private long musikId;
     private String productname;
     private double price;
     private String genre;
-    private String Title;
+    private String title;
 
-    public Musik(long musikId, String productname, double price, String genre, String title) {
+    public Musik(){
+
+    }
+
+    public Musik(long musikId,String productname, double price, String genre, String title) {
         this.musikId = musikId;
         this.productname = productname;
         this.price = price;
         this.genre = genre;
-        Title = title;
+        this.title = title;
     }
 
     public long getMusikId() {
@@ -51,11 +61,15 @@ public class Musik {
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        title = title;
+    }
+
+    public String getMusikIdString(){
+        return String.valueOf(musikId);
     }
 
     @Override
@@ -63,11 +77,11 @@ public class Musik {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Musik musik = (Musik) o;
-        return musikId == musik.musikId && Double.compare(musik.price, price) == 0 && Objects.equals(productname, musik.productname) && Objects.equals(genre, musik.genre) && Objects.equals(Title, musik.Title);
+        return musikId == musik.musikId && Double.compare(musik.price, price) == 0 && Objects.equals(productname, musik.productname) && Objects.equals(genre, musik.genre) && Objects.equals(title, musik.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(musikId, productname, price, genre, Title);
+        return Objects.hash(musikId, productname, price, genre, title);
     }
 }
