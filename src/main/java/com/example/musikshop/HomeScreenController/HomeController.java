@@ -36,6 +36,7 @@ public class HomeController {
         return "createMusik";
     }
 
+
     @RequestMapping("/addMusic")
     public String insertMusik(@ModelAttribute("musikname")String musikname,
                               @ModelAttribute("price")double price,
@@ -43,8 +44,15 @@ public class HomeController {
                               @ModelAttribute("artist") String artist,
                               Model model){
 
-        Musik musik = new Musik(musikServiceIF.generateIndex(),musikname,price,genre,artist); //Todo
+        Musik musik = new Musik(musikServiceIF.generateIndex(),musikname,price,genre,artist);
         musikServiceIF.createMusik(musik);
         return "redirekt:/";
     }
+
+    @RequestMapping("/loginPage")
+    public String getLoginPage(){
+        return "login";
+    }
+
+
 }

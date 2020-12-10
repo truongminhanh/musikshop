@@ -15,17 +15,32 @@ public class Musik {
     private double price;
     private String genre;
     private String title;
+    private String imgpath;
 
     public Musik(){
 
     }
 
-    public Musik(long musikId,String productname, double price, String genre, String title) {
+    public String getImgPath() {
+        System.out.println("Test" + this.imgpath);
+        return imgpath;
+    }
+
+    public String getImgName(){
+        return "images/klangkuenstler.png";
+    }
+
+    public void setImgPath(String imgpath) {
+        this.imgpath = imgpath;
+    }
+
+    public Musik(long musikId, String productname, double price, String genre, String title) {
         this.musikId = musikId;
         this.productname = productname;
         this.price = price;
         this.genre = genre;
         this.title = title;
+        this.imgpath = imgpath;
     }
 
     public long getMusikId() {
