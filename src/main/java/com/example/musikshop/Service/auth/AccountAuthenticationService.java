@@ -1,6 +1,7 @@
 package com.example.musikshop.Service.auth;
 
 import com.example.musikshop.Entity.Customer;
+import com.example.login.repositoryLogin.UserRepository;
 import com.example.musikshop.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class AccountAuthenticationService {
 
     @Autowired
-    private AuthenticationManager authManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -23,10 +24,14 @@ public class AccountAuthenticationService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Customer getLoggedInUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.isAuthenticated()){
-            return customerRepository.findbyEmail(authentication.getName()).orElse(null);
+        if(authentication.isAuthenticated()) {
+            System.out.println(authentication.getName());
+            return customerRepository.findByEmail(authentication.getName()).orElse(null);
         }else{
             return null;
         }
@@ -34,10 +39,13 @@ public class AccountAuthenticationService {
 
     public void login(String email,String password){
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(userDetails,password,userDetails.getAuthorities());
-        authManager.authenticate(userToken);
+        UsernamePasswordAuthenticationToken userToken =
+                new UsernamePasswordAuthenticationToken(
+                        userDetails, password, userDetails.getAuthorities());
+        authenticationManager.authenticate(userToken);
         if(userToken.isAuthenticated()){
             SecurityContextHolder.getContext().setAuthentication(userToken);
         }
+
     }
 }

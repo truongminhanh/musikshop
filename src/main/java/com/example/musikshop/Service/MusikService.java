@@ -5,6 +5,7 @@ import com.example.musikshop.repository.MusikRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +21,7 @@ public class MusikService implements MusikServiceIF {
     }
 
     @Override
-    public Iterable<Musik> getMusiklist(){
+    public List<Musik> getMusiklist(){
         return musikRepository.findAll();
     }
 
@@ -37,5 +38,10 @@ public class MusikService implements MusikServiceIF {
             size++;
         }
         return size;
+    }
+
+    @Override
+    public void deleteAll(){
+        musikRepository.deleteAll();
     }
 }

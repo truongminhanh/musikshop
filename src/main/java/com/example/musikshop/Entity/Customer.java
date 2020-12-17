@@ -16,7 +16,7 @@ public class Customer implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userId;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private String firstName;
     private String lastName;
@@ -39,39 +39,29 @@ public class Customer implements Serializable, UserDetails {
         this.password=password;
     }
 
-    public String getPassword(){
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() { return null;}
+
+    public String getPassword() {
         return password;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public String getUsername() {
         return null;
     }
 
     @Override
-    public String getUsername(){
-        return email;
-    }
+    public boolean isAccountNonExpired(){ return true;}
 
     @Override
-    public boolean isAccountNonExpired(){
-        return true;
-    }
+    public boolean isAccountNonLocked(){ return true;}
 
     @Override
-    public boolean isAccountNonLocked(){
-        return true;
-    }
+    public boolean isCredentialsNonExpired(){ return true;}
 
     @Override
-    public boolean isCredentialsNonExpired(){
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled(){
-        return true;
-    }
+    public boolean isEnabled() {return true;}
 
     public long getUserId() {
         return userId;

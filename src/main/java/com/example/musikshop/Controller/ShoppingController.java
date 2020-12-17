@@ -1,7 +1,10 @@
-package com.example.musikshop.HomeScreenController;
+package com.example.musikshop.Controller;
 
 import com.example.musikshop.Entity.CartItem;
+import com.example.musikshop.Entity.Customer;
+import com.example.musikshop.Entity.CustomerOrder;
 import com.example.musikshop.Service.MusikServiceIF;
+import com.example.musikshop.Service.auth.AccountAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +19,15 @@ import java.util.List;
 @Controller
 public class ShoppingController {
 
-    List<CartItem> cart = new ArrayList<>();
+    ArrayList<CartItem> cart = new ArrayList<>();
     private int quantity = 1;
+    private double total = 0;
+
     @Autowired
     private MusikServiceIF musikServiceIF;
 
-
+    @Autowired
+    private AccountAuthenticationService accountAuthenticationService;
 
 
     @RequestMapping("/cart")
@@ -40,14 +46,20 @@ public class ShoppingController {
         //model.addAttribute("cart",cart);
 
         if(!check(id,cart)){
-            cart.add(new CartItem(musikServiceIF.findMusik(id).get(),quantity));
+            //cart.add(new CartItem(musikServiceIF.findMusik(id).get(),quantity)); 17.12
+            CartItem cartItem = new CartItem(musikServiceIF.findMusik(id).get(),quantity);
+            cart.add(cartItem);
+            total = total +cartItem.getMusik().getPrice();
             model.addAttribute("musikcart",cart);
+            model.addAttribute("total",String.valueOf(total));
             System.out.println(Arrays.toString(cart.toArray())+"test");
         }else{
             CartItem cartItem = findMusikInCart(id);
+            total = total + cartItem.getMusik().getPrice();
             int newQuantity = cartItem.getQuantity() + 1;
             cartItem.setQuantity(newQuantity);
             model.addAttribute("musikcart",cart);
+            model.addAttribute("total",String.valueOf(total));
         }
 
         return "MusikCart";
@@ -69,8 +81,12 @@ public class ShoppingController {
 
     @RequestMapping("/remove/{id}")
     public String removeMusik(@PathVariable long id,Model model){
-        cart.remove(findMusikInCart(id));
+        //cart.remove(findMusikInCart(id)); 17.12
+        CartItem cartItem = findMusikInCart(id);
+        cart.remove(cartItem);
+        total = total - cartItem.getQuantity() * cartItem.getMusik().getPrice();
         model.addAttribute("cart",cart);
+        model.addAttribute("total",String.valueOf(total));
         return "MusikCart";
     }
 
@@ -83,5 +99,12 @@ public class ShoppingController {
             }
         }
         return null;
+    }
+
+    @RequestMapping("/payOrder")
+    public String payOrder(){
+
+
+        return "paymentSuccess";
     }
 }

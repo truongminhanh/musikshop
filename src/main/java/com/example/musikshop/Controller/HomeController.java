@@ -1,4 +1,4 @@
-package com.example.musikshop.HomeScreenController;
+package com.example.musikshop.Controller;
 
 import com.example.musikshop.Service.MusikServiceIF;
 import com.example.musikshop.Entity.Musik;
@@ -54,5 +54,8 @@ public class HomeController {
         return "login";
     }
 
-
+    @RequestMapping("/login")
+    public String LoginPage(){
+        return "login";
+    }
 }
